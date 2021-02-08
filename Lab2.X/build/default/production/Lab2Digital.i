@@ -2790,17 +2790,12 @@ void __attribute__((picinterrupt(("")))) isr(void) {
         INTCONbits.RBIF = 0;
     }
     if (PIR1bits.ADIF == 1) {
-
-        ADCON0bits.GO_nDONE = 0;
-        PORTEbits.RE0 = 1;
         contador = ADRESH;
         PORTC = contador;
-
-        ADCON0bits.ADON = 1;
-        delay(20000);
-        ADCON0bits.GO_nDONE = 1;
         PIR1bits.ADIF = 0;
-
+        delay(2000);
+        PIR1bits.ADIF = 0;
+        ADCON0bits.GO=1;
 
 
     }
@@ -2815,10 +2810,12 @@ void __attribute__((picinterrupt(("")))) isr(void) {
 void main(void) {
     setup();
     delay(5000);
-
+    ADCON0bits.GO = 1;
+    ADCON0bits.GO_nDONE=1;
     while (1) {
 
 
+         PORTEbits.RE0 = 0;
 
         delay(5000);
     }
@@ -2832,7 +2829,8 @@ void main(void) {
 
 
 void setup(void) {
-    ANSELH = 1;
+    ANSEL = 0;
+    ANSELH = 0;
     TRISB = 0b00000011;
     PORTB = 0;
     TRISC = 0;
@@ -2849,14 +2847,14 @@ void setup(void) {
     IOCBbits.IOCB1 = 1;
 
 
-    TRISA = 1;
+    TRISA = 0;
+    TRISAbits.TRISA0 = 1;
     PORTA = 0;
-    ANSEL = 1;
-
+    ANSELbits.ANS0 = 1;
     ADCON0bits.ADON = 1;
 
     ADCON0bits.CHS = 0b0000;
-    ADCON0bits.ADCS = 0b01;
+    ADCON0bits.ADCS = 0b10;
     ADCON1bits.ADFM = 0;
     ADCON1bits.VCFG1 = 0;
     ADCON1bits.VCFG0 = 0;

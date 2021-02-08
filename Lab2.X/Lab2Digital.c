@@ -64,18 +64,13 @@ void __interrupt() isr(void) {
         INTCONbits.RBIF = 0;
     }
     if (PIR1bits.ADIF == 1) {
-        // ADCON0bits.ADON = 0; //ADC esta habilitado
-        ADCON0bits.GO_nDONE = 0;
-        PORTEbits.RE0 = 1;
         contador = ADRESH;
         PORTC = contador;
-        //    ADCON0bits.ADON = 0; //ADC esta haeilitado
-        ADCON0bits.ADON = 1; //ADC esta habilitado
-        delay(20000);
-        ADCON0bits.GO_nDONE = 1;
         PIR1bits.ADIF = 0;
-
-        //delay(5000);
+        delay(2000);
+        PIR1bits.ADIF = 0;
+        ADCON0bits.GO=1;
+     // delay(2000);
 
     }
 }
@@ -89,11 +84,13 @@ void __interrupt() isr(void) {
 void main(void) {
     setup();
     delay(5000);
-    //ADCON0bits.GO_nDONE = 1;
+    ADCON0bits.GO = 1;
+    ADCON0bits.GO_nDONE=1;  
     while (1) {
         //
         //ADCON0bits.GO=1;
-      //PORTEbits.RE0 = 0;
+         PORTEbits.RE0 = 0;
+       //ORTC=contador;
         delay(5000);
     }
 
@@ -106,7 +103,8 @@ void main(void) {
 //****************************************************************************
 
 void setup(void) {
-    ANSELH = 1;
+    ANSEL = 0;
+    ANSELH = 0;
     TRISB = 0b00000011;
     PORTB = 0;
     TRISC = 0;
@@ -119,18 +117,18 @@ void setup(void) {
     INTCONbits.PEIE = 1;
     INTCONbits.RBIE = 1; //
     INTCONbits.RBIF = 0;
-    IOCBbits.IOCB0 = 1;
-    IOCBbits.IOCB1 = 1;
+    IOCBbits.IOCB0 = 1; //Interrupt on change del B0
+    IOCBbits.IOCB1 = 1; //iNTERUPTN ON CHANGE DEL B1
 
 
-    TRISA = 1;
+    TRISA = 0;
+    TRISAbits.TRISA0 = 1;
     PORTA = 0;
-    ANSEL = 1;
-    //ANSELH = 1;
+    ANSELbits.ANS0 = 1;
     ADCON0bits.ADON = 1; //ADC esta habilitado
     //ADCON0bits.GO_nDONE = 1; //
     ADCON0bits.CHS = 0b0000; //Seleccionamos canal AN0
-    ADCON0bits.ADCS = 0b01; // Clock Fosc/8
+    ADCON0bits.ADCS = 0b10; // Clock Fosc/32
     ADCON1bits.ADFM = 0; //Justificado hacia la izquierda
     ADCON1bits.VCFG1 = 0; //Voltaje de referencia a VSS
     ADCON1bits.VCFG0 = 0; //Voltaje de referencia a VDD
@@ -138,7 +136,7 @@ void setup(void) {
     PIE1bits.ADIE = 1;
     PIR1bits.ADIF = 0;
 
- // ADCON0bits.GO_nDONE = 1;
+    // ADCON0bits.GO_nDONE = 1;
 
 
     contador = 0;
