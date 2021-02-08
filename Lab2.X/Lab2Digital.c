@@ -39,6 +39,11 @@
 #define incrementar PORTBbits.RB0
 #define decrementar PORTBbits.RB1
 uint8_t contador; //entero de 8 bits sin signo
+int numeros[16]={0b00111111,0b00000111,0b01001111,0b01100110,0b01101101,
+0b01111101,0b01000111,0b01111111,0b01101111,0b01110111,0b01111100,0b00111001,
+0b01011110,0b01111001,0b01110001};
+uint8_t hexa1; //entero de 8 bits sin signo
+uint8_t hexa2; //entero de 8 bits sin signo
 
 
 //*****************************************************************************
@@ -69,8 +74,8 @@ void __interrupt() isr(void) {
         PIR1bits.ADIF = 0;
         delay(2000);
         PIR1bits.ADIF = 0;
-        ADCON0bits.GO=1;
-     // delay(2000);
+        ADCON0bits.GO = 1;
+        // delay(2000);
 
     }
 }
@@ -84,13 +89,14 @@ void __interrupt() isr(void) {
 void main(void) {
     setup();
     delay(5000);
-    ADCON0bits.GO = 1;
-    ADCON0bits.GO_nDONE=1;  
+    ADC(0, 0);
+    ADCON0bits.GO_nDONE = 1;
+
     while (1) {
-        //
-        //ADCON0bits.GO=1;
-         PORTEbits.RE0 = 0;
-       //ORTC=contador;
+      //  PORTEbits.RE0 = 0;
+      //  hexa1=contador/10;
+      //  display=
+        
         delay(5000);
     }
 
@@ -103,8 +109,12 @@ void main(void) {
 //****************************************************************************
 
 void setup(void) {
+    
+    
     ANSEL = 0;
     ANSELH = 0;
+    TRISA = 0;
+    PORTA = 0;
     TRISB = 0b00000011;
     PORTB = 0;
     TRISC = 0;
@@ -121,23 +131,18 @@ void setup(void) {
     IOCBbits.IOCB1 = 1; //iNTERUPTN ON CHANGE DEL B1
 
 
-    TRISA = 0;
-    TRISAbits.TRISA0 = 1;
-    PORTA = 0;
-    ANSELbits.ANS0 = 1;
-    ADCON0bits.ADON = 1; //ADC esta habilitado
-    //ADCON0bits.GO_nDONE = 1; //
-    ADCON0bits.CHS = 0b0000; //Seleccionamos canal AN0
-    ADCON0bits.ADCS = 0b10; // Clock Fosc/32
-    ADCON1bits.ADFM = 0; //Justificado hacia la izquierda
-    ADCON1bits.VCFG1 = 0; //Voltaje de referencia a VSS
-    ADCON1bits.VCFG0 = 0; //Voltaje de referencia a VDD
 
-    PIE1bits.ADIE = 1;
-    PIR1bits.ADIF = 0;
+    //  TRISAbits.TRISA0 = 1;
+    //  ANSELbits.ANS0 = 1;
 
-    // ADCON0bits.GO_nDONE = 1;
-
+    //  ADCON0bits.ADON = 1; //ADC esta habilitado
+    //  ADCON0bits.CHS = 0b0000; //Seleccionamos canal AN0
+    //  ADCON0bits.ADCS = 0b10; // Clock Fosc/32
+    //  ADCON1bits.ADFM = 0; //Justificado hacia la izquierda
+    //  ADCON1bits.VCFG1 = 0; //Voltaje de referencia a VSS
+    //  ADCON1bits.VCFG0 = 0; //Voltaje de referencia a VDD
+    //  PIE1bits.ADIE = 1;
+    //  PIR1bits.ADIF = 0;
 
     contador = 0;
 

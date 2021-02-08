@@ -2725,19 +2725,12 @@ extern int printf(const char *, ...);
 # 15 "Lab2Digital.c" 2
 
 # 1 "./ADC.h" 1
-
-
-
-
-
-
-
-
+# 10 "./ADC.h"
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\c90\\stdint.h" 1 3
-# 9 "./ADC.h" 2
+# 10 "./ADC.h" 2
 
 
-void ADC(void);
+void ADC(uint8_t ANA, uint8_t justificado);
 # 16 "Lab2Digital.c" 2
 
 
@@ -2765,6 +2758,11 @@ void ADC(void);
 
 
 uint8_t contador;
+int numeros[16]={0b00111111,0b00000111,0b01001111,0b01100110,0b01101101,
+0b01111101,0b01000111,0b01111111,0b01101111,0b01110111,0b01111100,0b00111001,
+0b01011110,0b01111001,0b01110001};
+uint8_t hexa1;
+uint8_t hexa2;
 
 
 
@@ -2795,7 +2793,7 @@ void __attribute__((picinterrupt(("")))) isr(void) {
         PIR1bits.ADIF = 0;
         delay(2000);
         PIR1bits.ADIF = 0;
-        ADCON0bits.GO=1;
+        ADCON0bits.GO = 1;
 
 
     }
@@ -2810,12 +2808,13 @@ void __attribute__((picinterrupt(("")))) isr(void) {
 void main(void) {
     setup();
     delay(5000);
-    ADCON0bits.GO = 1;
-    ADCON0bits.GO_nDONE=1;
+    ADC(0, 0);
+    ADCON0bits.GO_nDONE = 1;
+
     while (1) {
 
 
-         PORTEbits.RE0 = 0;
+
 
         delay(5000);
     }
@@ -2829,8 +2828,12 @@ void main(void) {
 
 
 void setup(void) {
+
+
     ANSEL = 0;
     ANSELH = 0;
+    TRISA = 0;
+    PORTA = 0;
     TRISB = 0b00000011;
     PORTB = 0;
     TRISC = 0;
@@ -2845,26 +2848,7 @@ void setup(void) {
     INTCONbits.RBIF = 0;
     IOCBbits.IOCB0 = 1;
     IOCBbits.IOCB1 = 1;
-
-
-    TRISA = 0;
-    TRISAbits.TRISA0 = 1;
-    PORTA = 0;
-    ANSELbits.ANS0 = 1;
-    ADCON0bits.ADON = 1;
-
-    ADCON0bits.CHS = 0b0000;
-    ADCON0bits.ADCS = 0b10;
-    ADCON1bits.ADFM = 0;
-    ADCON1bits.VCFG1 = 0;
-    ADCON1bits.VCFG0 = 0;
-
-    PIE1bits.ADIE = 1;
-    PIR1bits.ADIF = 0;
-
-
-
-
+# 147 "Lab2Digital.c"
     contador = 0;
 
 }
