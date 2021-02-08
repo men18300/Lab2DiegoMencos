@@ -2633,22 +2633,29 @@ typedef uint16_t uintptr_t;
 # 9 "./ADC.h" 2
 
 
-void ADC();
-void setup(void);
+void ADC(void);
+# 1 "ADC.c" 2
 
-void setup(void){
-    ADCON0bits.ADON=1
-    ADCON0bits.GO_nDONE=0;
-    ADCON0bits.CHS=0b0000;
-    ADCON0bits.ADCS=0b01;
-    ADCON1bits.ADFM=1;
-    ADCON1bits.VCFG1=0;
-    ADCON1bits.VCFG0=0;
 
-    INTCONbits.GIE=1;
-    INTCONbits.PEIE=1;
+
+void ADC(void) {
+
+    TRISA = 1;
+    PORTA = 0;
+    ANSEL = 1;
+
+    ADCON0bits.ADON = 1;
+    ADCON0bits.GO_nDONE = 1;
+    ADCON0bits.CHS = 0b0000;
+    ADCON0bits.ADCS = 0b01;
+    ADCON1bits.ADFM = 0;
+    ADCON1bits.VCFG1 = 0;
+    ADCON1bits.VCFG0 = 0;
+
+    INTCONbits.GIE = 1;
+    INTCONbits.PEIE = 1;
+    PIE1bits.ADIE = 1;
+
 
 
 }
-# 1 "ADC.c" 2
-
