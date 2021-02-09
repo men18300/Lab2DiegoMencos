@@ -2758,11 +2758,14 @@ void ADC(uint8_t ANA, uint8_t justificado);
 
 
 uint8_t contador;
-int numeros[16]={0b00111111,0b00000111,0b01001111,0b01100110,0b01101101,
-0b01111101,0b01000111,0b01111111,0b01101111,0b01110111,0b01111100,0b00111001,
-0b01011110,0b01111001,0b01110001};
+int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
+    0b10000010, 0b10111000, 0b11000000, 0b10010000, 0b10001000, 0b10001000,0b10000011, 0b11000110,
+    0b10100001, 0b10000110, 0b10001110};
 uint8_t hexa1;
 uint8_t hexa2;
+uint8_t display;
+uint8_t preloadt0;
+uint8_t CAMBIO;
 
 
 
@@ -2789,34 +2792,58 @@ void __attribute__((picinterrupt(("")))) isr(void) {
     }
     if (PIR1bits.ADIF == 1) {
         contador = ADRESH;
-        PORTC = contador;
         PIR1bits.ADIF = 0;
-        delay(2000);
-        PIR1bits.ADIF = 0;
+
         ADCON0bits.GO = 1;
-
-
     }
+    if (INTCONbits.T0IF == 1) {
+        preloadt0--;
+        INTCONbits.T0IF =0;
+        if (preloadt0 == 0) {
+            if (CAMBIO == 1) {
+                CAMBIO = 0;
+            } else if (CAMBIO == 0) {
+                CAMBIO = 1;
+            }
+            preloadt0 = 3;
+        }
+    }
+
 }
-
-
-
-
-
-
-
+# 102 "Lab2Digital.c"
 void main(void) {
     setup();
     delay(5000);
     ADC(0, 0);
     ADCON0bits.GO_nDONE = 1;
 
+
+
     while (1) {
 
 
 
 
-        delay(5000);
+
+
+
+        if (CAMBIO == 1) {
+            PORTAbits.RA3 = 0;
+
+            hexa1 = contador / 16;
+            PORTC = numeros[hexa2];
+            PORTAbits.RA4 = 1;
+        } else if (CAMBIO == 0) {
+            PORTAbits.RA4 = 0;
+
+            hexa2 = contador % 16;
+            PORTC = numeros[hexa2];
+            PORTAbits.RA3 = 1;
+        }
+
+
+
+
     }
 
 
@@ -2848,7 +2875,15 @@ void setup(void) {
     INTCONbits.RBIF = 0;
     IOCBbits.IOCB0 = 1;
     IOCBbits.IOCB1 = 1;
-# 147 "Lab2Digital.c"
+
+
+    INTCONbits.T0IE = 1;
+    INTCONbits.T0IF = 0;
+    OPTION_REGbits.T0CS = 0;
+    OPTION_REGbits.PSA = 0;
+    OPTION_REGbits.PS = 0b001;
+    preloadt0 = 255;
+# 187 "Lab2Digital.c"
     contador = 0;
 
 }
