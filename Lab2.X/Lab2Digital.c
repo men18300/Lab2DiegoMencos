@@ -14,6 +14,7 @@
 #include <stdint.h> 
 #include <stdio.h>
 #include "ADC.h"
+#include "SEGcodigo.h"
 
 
 // CONFIG1
@@ -39,12 +40,6 @@
 #define incrementar PORTBbits.RB0
 #define decrementar PORTBbits.RB1
 uint8_t contador; //entero de 8 bits sin signo
-int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
-    0b10000010, 0b10111000, 0b11000000, 0b10010000, 0b10001000, 0b10001000,0b10000011, 0b11000110,
-    0b10100001, 0b10000110, 0b10001110};
-uint8_t hexa1; //entero de 8 bits sin signo
-uint8_t hexa2; //entero de 8 bits sin signo
-uint8_t display; //entero de 8 bits sin signo
 uint8_t preloadt0; //entero de 8 bits sin signo
 uint8_t CAMBIO; //entero de 8 bits sin signo
 
@@ -74,12 +69,11 @@ void __interrupt() isr(void) {
     if (PIR1bits.ADIF == 1) {
         contador = ADRESH;
         PIR1bits.ADIF = 0;
-        //   delay(5000);
         ADCON0bits.GO = 1;
     }
     if (INTCONbits.T0IF == 1) {
         preloadt0--;
-        INTCONbits.T0IF =0;
+        INTCONbits.T0IF = 0;
         if (preloadt0 == 0) {
             if (CAMBIO == 1) {
                 CAMBIO = 0;
@@ -104,37 +98,41 @@ void main(void) {
     delay(5000);
     ADC(0, 0);
     ADCON0bits.GO_nDONE = 1;
-    //   PORTAbits.RA3 = 1;
-    // PORTAbits.RA4 = 1;
+
 
     while (1) {
-        //    hexa1 = contador / 16;
-        //  hexa2 = contador % 16;
-        //  PORTAbits.RA3 = 1;
-        //PORTC = contador;
-       // PORTC = numeros[hexa2];
-        //  PORTAbits.RA3 = 1;
 
         if (CAMBIO == 1) {
+
             PORTAbits.RA3 = 0;
-
-            hexa1 = contador / 16;
-            PORTC = numeros[hexa2];
+            SEGcodigo(1, contador);
             PORTAbits.RA4 = 1;
-        } else if (CAMBIO == 0) {
-            PORTAbits.RA4 = 0;
+            PORTC = resultado;
 
-            hexa2 = contador % 16;
-            PORTC = numeros[hexa2];
+
+
+        } else if (CAMBIO == 0) {
+
+            PORTAbits.RA4 = 0;
+            SEGcodigo(0, contador);
             PORTAbits.RA3 = 1;
+            PORTC = resultado;
+
+
+
+
+        } else if (contador >> PORTD) {
+            PORTAbits.RA2 = 1;
+
+        } else {
+            PORTAbits.RA2 = 0;
         }
 
 
 
 
+
     }
-
-
     return;
 }
 
@@ -171,18 +169,6 @@ void setup(void) {
     OPTION_REGbits.PSA = 0;
     OPTION_REGbits.PS = 0b001;
     preloadt0 = 255;
-
-    //TRISAbits.TRISA0 = 1;
-    //ANSELbits.ANS0 = 1;
-
-    //ADCON0bits.ADON = 1; //ADC esta habilitado
-    //ADCON0bits.CHS = 0b0000; //Seleccionamos canal AN0
-    //ADCON0bits.ADCS = 0b10; // Clock Fosc/32
-    // ADCON1bits.ADFM = 0; //Justificado hacia la izquierda
-    //  ADCON1bits.VCFG1 = 0; //Voltaje de referencia a VSS
-    // ADCON1bits.VCFG0 = 0; //Voltaje de referencia a VDD
-    // PIE1bits.ADIE = 1;
-    //  PIR1bits.ADIF = 0;
 
     contador = 0;
 

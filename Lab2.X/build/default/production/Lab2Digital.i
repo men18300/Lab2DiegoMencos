@@ -2733,6 +2733,28 @@ extern int printf(const char *, ...);
 void ADC(uint8_t ANA, uint8_t justificado);
 # 16 "Lab2Digital.c" 2
 
+# 1 "./SEGcodigo.h" 1
+
+
+
+
+
+
+# 1 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\c90\\stdint.h" 1 3
+# 7 "./SEGcodigo.h" 2
+
+
+
+int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
+    0b10000010, 0b10111000, 0b11111000, 0b10010000, 0b10001000, 0b10001000, 0b10000011, 0b11000110,
+    0b10100001, 0b10000110, 0b10001110};
+uint8_t resultado;
+uint8_t hexa2;
+uint8_t hexa1;
+
+void SEGcodigo(uint8_t unidad, uint8_t contador);
+# 17 "Lab2Digital.c" 2
+
 
 
 
@@ -2758,12 +2780,6 @@ void ADC(uint8_t ANA, uint8_t justificado);
 
 
 uint8_t contador;
-int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
-    0b10000010, 0b10111000, 0b11000000, 0b10010000, 0b10001000, 0b10001000,0b10000011, 0b11000110,
-    0b10100001, 0b10000110, 0b10001110};
-uint8_t hexa1;
-uint8_t hexa2;
-uint8_t display;
 uint8_t preloadt0;
 uint8_t CAMBIO;
 
@@ -2793,12 +2809,11 @@ void __attribute__((picinterrupt(("")))) isr(void) {
     if (PIR1bits.ADIF == 1) {
         contador = ADRESH;
         PIR1bits.ADIF = 0;
-
         ADCON0bits.GO = 1;
     }
     if (INTCONbits.T0IF == 1) {
         preloadt0--;
-        INTCONbits.T0IF =0;
+        INTCONbits.T0IF = 0;
         if (preloadt0 == 0) {
             if (CAMBIO == 1) {
                 CAMBIO = 0;
@@ -2810,7 +2825,7 @@ void __attribute__((picinterrupt(("")))) isr(void) {
     }
 
 }
-# 102 "Lab2Digital.c"
+# 96 "Lab2Digital.c"
 void main(void) {
     setup();
     delay(5000);
@@ -2818,35 +2833,39 @@ void main(void) {
     ADCON0bits.GO_nDONE = 1;
 
 
-
     while (1) {
 
-
-
-
-
-
-
         if (CAMBIO == 1) {
+
             PORTAbits.RA3 = 0;
-
-            hexa1 = contador / 16;
-            PORTC = numeros[hexa2];
+            SEGcodigo(1, contador);
             PORTAbits.RA4 = 1;
-        } else if (CAMBIO == 0) {
-            PORTAbits.RA4 = 0;
+            PORTC = resultado;
 
-            hexa2 = contador % 16;
-            PORTC = numeros[hexa2];
+
+
+        } else if (CAMBIO == 0) {
+
+            PORTAbits.RA4 = 0;
+            SEGcodigo(0, contador);
             PORTAbits.RA3 = 1;
+            PORTC = resultado;
+
+
+
+
+        } else if (contador >> PORTD) {
+            PORTAbits.RA2 = 1;
+
+        } else {
+            PORTAbits.RA2 = 0;
         }
 
 
 
 
+
     }
-
-
     return;
 }
 
@@ -2883,7 +2902,7 @@ void setup(void) {
     OPTION_REGbits.PSA = 0;
     OPTION_REGbits.PS = 0b001;
     preloadt0 = 255;
-# 187 "Lab2Digital.c"
+
     contador = 0;
 
 }

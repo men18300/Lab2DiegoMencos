@@ -68,11 +68,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h: 1276: extern volatile ADCON0bits_t ADCON0bits __attribute__((address(0x01F)));
 [v _ADCON0bits `VS44 ~T0 @X0 0 e@31 ]
 [p mainexit ]
-"55 Lab2Digital.c
-[; ;Lab2Digital.c: 55:         }
+"50 Lab2Digital.c
+[; ;Lab2Digital.c: 50: 
 [v _setup `(v ~T0 @X0 0 ef ]
-"56
-[; ;Lab2Digital.c: 56:     }
+"51
+[; ;Lab2Digital.c: 51: }
 [v _delay `(v ~T0 @X0 0 ef1`uc ]
 "12 ./ADC.h
 [; ;./ADC.h: 12: void ADC(uint8_t ANA, uint8_t justificado);
@@ -88,7 +88,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "183
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h: 183: extern volatile PORTAbits_t PORTAbits __attribute__((address(0x005)));
 [v _PORTAbits `VS5 ~T0 @X0 0 e@5 ]
-"290
+"17 ./SEGcodigo.h
+[; ;./SEGcodigo.h: 17: void SEGcodigo(uint8_t unidad, uint8_t contador);
+[v _SEGcodigo `(v ~T0 @X0 0 ef2`uc`uc ]
+"290 C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h: 290: extern volatile unsigned char PORTC __attribute__((address(0x007)));
 [v _PORTC `Vuc ~T0 @X0 0 e@7 ]
 "3387
@@ -385,47 +388,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "3546
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h: 3546: __asm("EECON2 equ 018Dh");
 [; <" EECON2 equ 018Dh ;# ">
-"20 Lab2Digital.c
-[; ;Lab2Digital.c: 20: void setup(void);
-[p x FOSC  =  INTRC_NOCLKOUT         ]
-"21
-[; ;Lab2Digital.c: 21: void delay(unsigned char n);
-[p x WDTE  =  OFF        ]
-"22
-[; ;Lab2Digital.c: 22: void __attribute__((picinterrupt(("")))) isr(void);
-[p x PWRTE  =  OFF       ]
-"23
-[; ;Lab2Digital.c: 23: 
-[p x MCLRE  =  ON        ]
-"24
-[; ;Lab2Digital.c: 24: 
-[p x CP  =  OFF          ]
-"25
-[; ;Lab2Digital.c: 25: 
-[p x CPD  =  OFF         ]
-"26
-[; ;Lab2Digital.c: 26: 
-[p x BOREN  =  OFF       ]
-"27
-[; ;Lab2Digital.c: 27: 
-[p x IESO  =  OFF        ]
-"28
-[; ;Lab2Digital.c: 28: void __attribute__((picinterrupt(("")))) isr(void) {
-[p x FCMEN  =  OFF       ]
-"29
-[; ;Lab2Digital.c: 29:     if (INTCONbits.RBIF == 1) {
-[p x LVP  =  OFF         ]
-"32
-[; ;Lab2Digital.c: 32: 
-[p x BOR4V  =  BOR40V    ]
-"33
-[; ;Lab2Digital.c: 33:         } else if (PORTBbits.RB1 == 1) {
-[p x WRT  =  OFF         ]
-"41
-[; ;Lab2Digital.c: 41:         PIR1bits.ADIF = 0;
-[v _contador `uc ~T0 @X0 1 e ]
-"42
-[; ;Lab2Digital.c: 42: 
+"10 ./SEGcodigo.h
+[; ;./SEGcodigo.h: 10: int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
 [v _numeros `i ~T0 @X0 -> 16 `i e ]
 [i _numeros
 :U ..
@@ -436,7 +400,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 146 `i
 -> 130 `i
 -> 184 `i
--> 192 `i
+-> 248 `i
 -> 144 `i
 -> 136 `i
 -> 136 `i
@@ -447,164 +411,223 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 142 `i
 ..
 ]
-"45
-[; ;Lab2Digital.c: 45:     if (INTCONbits.T0IF == 1) {
-[v _hexa1 `uc ~T0 @X0 1 e ]
-"46
-[; ;Lab2Digital.c: 46:         preloadt0--;
+"13
+[; ;./SEGcodigo.h: 13: uint8_t resultado;
+[v _resultado `uc ~T0 @X0 1 e ]
+"14
+[; ;./SEGcodigo.h: 14: uint8_t hexa2;
 [v _hexa2 `uc ~T0 @X0 1 e ]
-"47
-[; ;Lab2Digital.c: 47:         INTCONbits.T0IF =0;
-[v _display `uc ~T0 @X0 1 e ]
-"48
-[; ;Lab2Digital.c: 48:         if (preloadt0 == 0) {
+"15
+[; ;./SEGcodigo.h: 15: uint8_t hexa1;
+[v _hexa1 `uc ~T0 @X0 1 e ]
+"21 Lab2Digital.c
+[; ;Lab2Digital.c: 21: 
+[p x FOSC  =  INTRC_NOCLKOUT         ]
+"22
+[; ;Lab2Digital.c: 22: void __attribute__((picinterrupt(("")))) isr(void) {
+[p x WDTE  =  OFF        ]
+"23
+[; ;Lab2Digital.c: 23:     if (INTCONbits.RBIF == 1) {
+[p x PWRTE  =  OFF       ]
+"24
+[; ;Lab2Digital.c: 24:         if (PORTBbits.RB0 == 1) {
+[p x MCLRE  =  ON        ]
+"25
+[; ;Lab2Digital.c: 25:             PORTD++;
+[p x CP  =  OFF          ]
+"26
+[; ;Lab2Digital.c: 26: 
+[p x CPD  =  OFF         ]
+"27
+[; ;Lab2Digital.c: 27:         } else if (PORTBbits.RB1 == 1) {
+[p x BOREN  =  OFF       ]
+"28
+[; ;Lab2Digital.c: 28:             PORTD--;
+[p x IESO  =  OFF        ]
+"29
+[; ;Lab2Digital.c: 29: 
+[p x FCMEN  =  OFF       ]
+"30
+[; ;Lab2Digital.c: 30:         }
+[p x LVP  =  OFF         ]
+"33
+[; ;Lab2Digital.c: 33:     if (PIR1bits.ADIF == 1) {
+[p x BOR4V  =  BOR40V    ]
+"34
+[; ;Lab2Digital.c: 34:         contador = ADRESH;
+[p x WRT  =  OFF         ]
+"42
+[; ;Lab2Digital.c: 42:             if (CAMBIO == 1) {
+[v _contador `uc ~T0 @X0 1 e ]
+"43
+[; ;Lab2Digital.c: 43:                 CAMBIO = 0;
 [v _preloadt0 `uc ~T0 @X0 1 e ]
-"49
-[; ;Lab2Digital.c: 49:             if (CAMBIO == 1) {
+"44
+[; ;Lab2Digital.c: 44:             } else if (CAMBIO == 0) {
 [v _CAMBIO `uc ~T0 @X0 1 e ]
 [v $root$_isr `(v ~T0 @X0 0 e ]
-"63
+"58
 [v _isr `(v ~T2 @X0 1 ef ]
 {
 [e :U _isr ]
 [f ]
-"64
+"59
 [e $ ! == -> . . _INTCONbits 0 0 `i -> 1 `i 140  ]
 {
-"65
+"60
 [e $ ! == -> . . _PORTBbits 0 0 `i -> 1 `i 141  ]
 {
-"66
+"61
 [e ++ _PORTD -> -> 1 `i `Vuc ]
-"68
+"63
 }
 [e $U 142  ]
 [e :U 141 ]
 [e $ ! == -> . . _PORTBbits 0 1 `i -> 1 `i 143  ]
 {
-"69
+"64
 [e -- _PORTD -> -> 1 `i `Vuc ]
-"71
+"66
 }
 [e :U 143 ]
 [e :U 142 ]
-"72
+"67
 [e = . . _INTCONbits 0 0 -> -> 0 `i `uc ]
-"73
+"68
 }
 [e :U 140 ]
-"74
+"69
 [e $ ! == -> . . _PIR1bits 0 6 `i -> 1 `i 144  ]
 {
-"75
+"70
 [e = _contador _ADRESH ]
-"76
+"71
 [e = . . _PIR1bits 0 6 -> -> 0 `i `uc ]
-"78
+"72
 [e = . . _ADCON0bits 1 1 -> -> 1 `i `uc ]
-"79
+"73
 }
 [e :U 144 ]
-"80
+"74
 [e $ ! == -> . . _INTCONbits 0 2 `i -> 1 `i 145  ]
 {
-"81
+"75
 [e -- _preloadt0 -> -> 1 `i `uc ]
-"82
+"76
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-"83
+"77
 [e $ ! == -> _preloadt0 `i -> 0 `i 146  ]
 {
-"84
+"78
 [e $ ! == -> _CAMBIO `i -> 1 `i 147  ]
 {
-"85
+"79
 [e = _CAMBIO -> -> 0 `i `uc ]
-"86
+"80
 }
 [e $U 148  ]
 [e :U 147 ]
 [e $ ! == -> _CAMBIO `i -> 0 `i 149  ]
 {
-"87
+"81
 [e = _CAMBIO -> -> 1 `i `uc ]
-"88
+"82
 }
 [e :U 149 ]
 [e :U 148 ]
-"89
+"83
 [e = _preloadt0 -> -> 3 `i `uc ]
-"90
+"84
 }
 [e :U 146 ]
-"91
+"85
 }
 [e :U 145 ]
-"93
+"87
 [e :UE 139 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"102
-[; ;Lab2Digital.c: 102: void main(void) {
+"96
+[; ;Lab2Digital.c: 96: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"103
-[; ;Lab2Digital.c: 103:     setup();
+"97
+[; ;Lab2Digital.c: 97:     setup();
 [e ( _setup ..  ]
-"104
-[; ;Lab2Digital.c: 104:     delay(5000);
+"98
+[; ;Lab2Digital.c: 98:     delay(5000);
 [e ( _delay (1 -> -> 5000 `i `uc ]
-"105
-[; ;Lab2Digital.c: 105:     ADC(0, 0);
+"99
+[; ;Lab2Digital.c: 99:     ADC(0, 0);
 [e ( _ADC (2 , -> -> 0 `i `uc -> -> 0 `i `uc ]
-"106
-[; ;Lab2Digital.c: 106:     ADCON0bits.GO_nDONE = 1;
+"100
+[; ;Lab2Digital.c: 100:     ADCON0bits.GO_nDONE = 1;
 [e = . . _ADCON0bits 0 1 -> -> 1 `i `uc ]
-"110
-[; ;Lab2Digital.c: 110:     while (1) {
+"103
+[; ;Lab2Digital.c: 103:     while (1) {
 [e :U 152 ]
 {
-"118
-[; ;Lab2Digital.c: 118:         if (CAMBIO == 1) {
+"105
+[; ;Lab2Digital.c: 105:         if (CAMBIO == 1) {
 [e $ ! == -> _CAMBIO `i -> 1 `i 154  ]
 {
-"119
-[; ;Lab2Digital.c: 119:             PORTAbits.RA3 = 0;
+"107
+[; ;Lab2Digital.c: 107:             PORTAbits.RA3 = 0;
 [e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
-"121
-[; ;Lab2Digital.c: 121:             hexa1 = contador / 16;
-[e = _hexa1 -> / -> _contador `i -> 16 `i `uc ]
-"122
-[; ;Lab2Digital.c: 122:             PORTC = numeros[hexa2];
-[e = _PORTC -> *U + &U _numeros * -> _hexa2 `ux -> -> # *U &U _numeros `ui `ux `uc ]
-"123
-[; ;Lab2Digital.c: 123:             PORTAbits.RA4 = 1;
+"108
+[; ;Lab2Digital.c: 108:             SEGcodigo(1, contador);
+[e ( _SEGcodigo (2 , -> -> 1 `i `uc _contador ]
+"109
+[; ;Lab2Digital.c: 109:             PORTAbits.RA4 = 1;
 [e = . . _PORTAbits 0 4 -> -> 1 `i `uc ]
-"124
-[; ;Lab2Digital.c: 124:         } else if (CAMBIO == 0) {
+"110
+[; ;Lab2Digital.c: 110:             PORTC = resultado;
+[e = _PORTC _resultado ]
+"114
+[; ;Lab2Digital.c: 114:         } else if (CAMBIO == 0) {
 }
 [e $U 155  ]
 [e :U 154 ]
 [e $ ! == -> _CAMBIO `i -> 0 `i 156  ]
 {
-"125
-[; ;Lab2Digital.c: 125:             PORTAbits.RA4 = 0;
+"116
+[; ;Lab2Digital.c: 116:             PORTAbits.RA4 = 0;
 [e = . . _PORTAbits 0 4 -> -> 0 `i `uc ]
-"127
-[; ;Lab2Digital.c: 127:             hexa2 = contador % 16;
-[e = _hexa2 -> % -> _contador `i -> 16 `i `uc ]
-"128
-[; ;Lab2Digital.c: 128:             PORTC = numeros[hexa2];
-[e = _PORTC -> *U + &U _numeros * -> _hexa2 `ux -> -> # *U &U _numeros `ui `ux `uc ]
-"129
-[; ;Lab2Digital.c: 129:             PORTAbits.RA3 = 1;
+"117
+[; ;Lab2Digital.c: 117:             SEGcodigo(0, contador);
+[e ( _SEGcodigo (2 , -> -> 0 `i `uc _contador ]
+"118
+[; ;Lab2Digital.c: 118:             PORTAbits.RA3 = 1;
 [e = . . _PORTAbits 0 3 -> -> 1 `i `uc ]
-"130
-[; ;Lab2Digital.c: 130:         }
+"119
+[; ;Lab2Digital.c: 119:             PORTC = resultado;
+[e = _PORTC _resultado ]
+"124
+[; ;Lab2Digital.c: 124:         } else if (contador >> PORTD) {
 }
+[e $U 157  ]
 [e :U 156 ]
+[e $ ! != >> -> _contador `i -> _PORTD `i -> 0 `i 158  ]
+{
+"125
+[; ;Lab2Digital.c: 125:             PORTAbits.RA2 = 1;
+[e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
+"127
+[; ;Lab2Digital.c: 127:         } else {
+}
+[e $U 159  ]
+[e :U 158 ]
+{
+"128
+[; ;Lab2Digital.c: 128:             PORTAbits.RA2 = 0;
+[e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
+"129
+[; ;Lab2Digital.c: 129:         }
+}
+[e :U 159 ]
+[e :U 157 ]
 [e :U 155 ]
 "135
 [; ;Lab2Digital.c: 135:     }
@@ -612,138 +635,138 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 151 ]
 [e $U 152  ]
 [e :U 153 ]
-"138
-[; ;Lab2Digital.c: 138:     return;
+"136
+[; ;Lab2Digital.c: 136:     return;
 [e $UE 150  ]
-"139
-[; ;Lab2Digital.c: 139: }
+"137
+[; ;Lab2Digital.c: 137: }
 [e :UE 150 ]
 }
-"145
-[; ;Lab2Digital.c: 145: void setup(void) {
+"143
+[; ;Lab2Digital.c: 143: void setup(void) {
 [v _setup `(v ~T0 @X0 1 ef ]
 {
 [e :U _setup ]
 [f ]
-"148
-[; ;Lab2Digital.c: 148:     ANSEL = 0;
+"146
+[; ;Lab2Digital.c: 146:     ANSEL = 0;
 [e = _ANSEL -> -> 0 `i `uc ]
-"149
-[; ;Lab2Digital.c: 149:     ANSELH = 0;
+"147
+[; ;Lab2Digital.c: 147:     ANSELH = 0;
 [e = _ANSELH -> -> 0 `i `uc ]
-"150
-[; ;Lab2Digital.c: 150:     TRISA = 0;
+"148
+[; ;Lab2Digital.c: 148:     TRISA = 0;
 [e = _TRISA -> -> 0 `i `uc ]
-"151
-[; ;Lab2Digital.c: 151:     PORTA = 0;
+"149
+[; ;Lab2Digital.c: 149:     PORTA = 0;
 [e = _PORTA -> -> 0 `i `uc ]
-"152
-[; ;Lab2Digital.c: 152:     TRISB = 0b00000011;
+"150
+[; ;Lab2Digital.c: 150:     TRISB = 0b00000011;
 [e = _TRISB -> -> 3 `i `uc ]
-"153
-[; ;Lab2Digital.c: 153:     PORTB = 0;
+"151
+[; ;Lab2Digital.c: 151:     PORTB = 0;
 [e = _PORTB -> -> 0 `i `uc ]
-"154
-[; ;Lab2Digital.c: 154:     TRISC = 0;
+"152
+[; ;Lab2Digital.c: 152:     TRISC = 0;
 [e = _TRISC -> -> 0 `i `uc ]
-"155
-[; ;Lab2Digital.c: 155:     PORTC = 0;
+"153
+[; ;Lab2Digital.c: 153:     PORTC = 0;
 [e = _PORTC -> -> 0 `i `uc ]
-"156
-[; ;Lab2Digital.c: 156:     TRISD = 0;
+"154
+[; ;Lab2Digital.c: 154:     TRISD = 0;
 [e = _TRISD -> -> 0 `i `uc ]
-"157
-[; ;Lab2Digital.c: 157:     PORTD = 0;
+"155
+[; ;Lab2Digital.c: 155:     PORTD = 0;
 [e = _PORTD -> -> 0 `i `uc ]
-"158
-[; ;Lab2Digital.c: 158:     TRISE = 0;
+"156
+[; ;Lab2Digital.c: 156:     TRISE = 0;
 [e = _TRISE -> -> 0 `i `uc ]
-"159
-[; ;Lab2Digital.c: 159:     PORTE = 0;
+"157
+[; ;Lab2Digital.c: 157:     PORTE = 0;
 [e = _PORTE -> -> 0 `i `uc ]
-"160
-[; ;Lab2Digital.c: 160:     INTCONbits.GIE = 1;
+"158
+[; ;Lab2Digital.c: 158:     INTCONbits.GIE = 1;
 [e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
-"161
-[; ;Lab2Digital.c: 161:     INTCONbits.PEIE = 1;
+"159
+[; ;Lab2Digital.c: 159:     INTCONbits.PEIE = 1;
 [e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
-"162
-[; ;Lab2Digital.c: 162:     INTCONbits.RBIE = 1;
+"160
+[; ;Lab2Digital.c: 160:     INTCONbits.RBIE = 1;
 [e = . . _INTCONbits 0 3 -> -> 1 `i `uc ]
-"163
-[; ;Lab2Digital.c: 163:     INTCONbits.RBIF = 0;
+"161
+[; ;Lab2Digital.c: 161:     INTCONbits.RBIF = 0;
 [e = . . _INTCONbits 0 0 -> -> 0 `i `uc ]
-"164
-[; ;Lab2Digital.c: 164:     IOCBbits.IOCB0 = 1;
+"162
+[; ;Lab2Digital.c: 162:     IOCBbits.IOCB0 = 1;
 [e = . . _IOCBbits 1 0 -> -> 1 `i `uc ]
-"165
-[; ;Lab2Digital.c: 165:     IOCBbits.IOCB1 = 1;
+"163
+[; ;Lab2Digital.c: 163:     IOCBbits.IOCB1 = 1;
 [e = . . _IOCBbits 1 1 -> -> 1 `i `uc ]
-"168
-[; ;Lab2Digital.c: 168:     INTCONbits.T0IE = 1;
+"166
+[; ;Lab2Digital.c: 166:     INTCONbits.T0IE = 1;
 [e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
-"169
-[; ;Lab2Digital.c: 169:     INTCONbits.T0IF = 0;
+"167
+[; ;Lab2Digital.c: 167:     INTCONbits.T0IF = 0;
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-"170
-[; ;Lab2Digital.c: 170:     OPTION_REGbits.T0CS = 0;
+"168
+[; ;Lab2Digital.c: 168:     OPTION_REGbits.T0CS = 0;
 [e = . . _OPTION_REGbits 0 3 -> -> 0 `i `uc ]
-"171
-[; ;Lab2Digital.c: 171:     OPTION_REGbits.PSA = 0;
+"169
+[; ;Lab2Digital.c: 169:     OPTION_REGbits.PSA = 0;
 [e = . . _OPTION_REGbits 0 1 -> -> 0 `i `uc ]
-"172
-[; ;Lab2Digital.c: 172:     OPTION_REGbits.PS = 0b001;
+"170
+[; ;Lab2Digital.c: 170:     OPTION_REGbits.PS = 0b001;
 [e = . . _OPTION_REGbits 0 0 -> -> 1 `i `uc ]
-"173
-[; ;Lab2Digital.c: 173:     preloadt0 = 255;
+"171
+[; ;Lab2Digital.c: 171:     preloadt0 = 255;
 [e = _preloadt0 -> -> 255 `i `uc ]
-"187
-[; ;Lab2Digital.c: 187:     contador = 0;
+"173
+[; ;Lab2Digital.c: 173:     contador = 0;
 [e = _contador -> -> 0 `i `uc ]
-"189
-[; ;Lab2Digital.c: 189: }
-[e :UE 157 ]
+"175
+[; ;Lab2Digital.c: 175: }
+[e :UE 160 ]
 }
-"191
-[; ;Lab2Digital.c: 191: void delay(unsigned char n) {
+"177
+[; ;Lab2Digital.c: 177: void delay(unsigned char n) {
 [v _delay `(v ~T0 @X0 1 ef1`uc ]
 {
 [e :U _delay ]
 [v _n `uc ~T0 @X0 1 r1 ]
 [f ]
-"192
-[; ;Lab2Digital.c: 192:     for (int i = 0; i < 255; i++) {
+"178
+[; ;Lab2Digital.c: 178:     for (int i = 0; i < 255; i++) {
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 255 `i 159  ]
-[e $U 160  ]
-[e :U 159 ]
-{
-"193
-[; ;Lab2Digital.c: 193:         for (int j = 0; j < 255; j++) {
-{
-[v _j `i ~T0 @X0 1 a ]
-[e = _j -> 0 `i ]
-[e $ < _j -> 255 `i 162  ]
+[e $ < _i -> 255 `i 162  ]
 [e $U 163  ]
 [e :U 162 ]
 {
-"194
-[; ;Lab2Digital.c: 194:         }
+"179
+[; ;Lab2Digital.c: 179:         for (int j = 0; j < 255; j++) {
+{
+[v _j `i ~T0 @X0 1 a ]
+[e = _j -> 0 `i ]
+[e $ < _j -> 255 `i 165  ]
+[e $U 166  ]
+[e :U 165 ]
+{
+"180
+[; ;Lab2Digital.c: 180:         }
 }
 [e ++ _j -> 1 `i ]
-[e $ < _j -> 255 `i 162  ]
-[e :U 163 ]
+[e $ < _j -> 255 `i 165  ]
+[e :U 166 ]
 }
-"195
-[; ;Lab2Digital.c: 195:     }
+"181
+[; ;Lab2Digital.c: 181:     }
 }
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 255 `i 159  ]
-[e :U 160 ]
+[e $ < _i -> 255 `i 162  ]
+[e :U 163 ]
 }
-"196
-[; ;Lab2Digital.c: 196: }
-[e :UE 158 ]
+"182
+[; ;Lab2Digital.c: 182: }
+[e :UE 161 ]
 }

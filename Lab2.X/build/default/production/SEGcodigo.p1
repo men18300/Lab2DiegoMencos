@@ -233,3 +233,75 @@ Version 4.0 HI-TECH Software Intermediate Code
 "3546
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f887.h: 3546: __asm("EECON2 equ 018Dh");
 [; <" EECON2 equ 018Dh ;# ">
+"10 ./SEGcodigo.h
+[; ;./SEGcodigo.h: 10: int numeros[16] = {0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10010010,
+[v _numeros `i ~T0 @X0 -> 16 `i e ]
+[i _numeros
+:U ..
+-> 192 `i
+-> 249 `i
+-> 164 `i
+-> 176 `i
+-> 146 `i
+-> 130 `i
+-> 184 `i
+-> 248 `i
+-> 144 `i
+-> 136 `i
+-> 136 `i
+-> 131 `i
+-> 198 `i
+-> 161 `i
+-> 134 `i
+-> 142 `i
+..
+]
+"13
+[; ;./SEGcodigo.h: 13: uint8_t resultado;
+[v _resultado `uc ~T0 @X0 1 e ]
+"14
+[; ;./SEGcodigo.h: 14: uint8_t hexa2;
+[v _hexa2 `uc ~T0 @X0 1 e ]
+"15
+[; ;./SEGcodigo.h: 15: uint8_t hexa1;
+[v _hexa1 `uc ~T0 @X0 1 e ]
+"3 SEGcodigo.c
+[; ;SEGcodigo.c: 3: void SEGcodigo(uint8_t unidad, uint8_t contador) {
+[v _SEGcodigo `(v ~T0 @X0 1 ef2`uc`uc ]
+{
+[e :U _SEGcodigo ]
+[v _unidad `uc ~T0 @X0 1 r1 ]
+[v _contador `uc ~T0 @X0 1 r2 ]
+[f ]
+"5
+[; ;SEGcodigo.c: 5:     if (unidad == 0) {
+[e $ ! == -> _unidad `i -> 0 `i 140  ]
+{
+"6
+[; ;SEGcodigo.c: 6:         hexa2 = contador % 16;
+[e = _hexa2 -> % -> _contador `i -> 16 `i `uc ]
+"7
+[; ;SEGcodigo.c: 7:         resultado=numeros[hexa2];
+[e = _resultado -> *U + &U _numeros * -> _hexa2 `ux -> -> # *U &U _numeros `ui `ux `uc ]
+"8
+[; ;SEGcodigo.c: 8:     } else if (unidad == 1) {
+}
+[e $U 141  ]
+[e :U 140 ]
+[e $ ! == -> _unidad `i -> 1 `i 142  ]
+{
+"9
+[; ;SEGcodigo.c: 9:         hexa1 = contador / 16;
+[e = _hexa1 -> / -> _contador `i -> 16 `i `uc ]
+"10
+[; ;SEGcodigo.c: 10:         resultado=numeros[hexa1];
+[e = _resultado -> *U + &U _numeros * -> _hexa1 `ux -> -> # *U &U _numeros `ui `ux `uc ]
+"11
+[; ;SEGcodigo.c: 11:     }
+}
+[e :U 142 ]
+[e :U 141 ]
+"13
+[; ;SEGcodigo.c: 13: }
+[e :UE 139 ]
+}
